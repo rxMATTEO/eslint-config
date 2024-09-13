@@ -1,6 +1,6 @@
 {
   "name": "ri-eslint-config",
-  "version": "0.1",
+  "version": "0.2",
   "description": "ESLint config for unjs projects",
   "license": "MIT",
   "type": "module",
