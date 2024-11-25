@@ -1,17 +1,17 @@
-import { defineBuildConfig } from "unbuild";
-import fs from "node:fs/promises";
+import { defineBuildConfig } from 'unbuild';
+import fs from 'node:fs/promises';
 
 export default defineBuildConfig({
   hooks: {
-    async "build:before"() {
-      const unjsPreset = await import("./src/eslint.config").then(
+    async 'build:before'() {
+      const unjsPreset = await import('./src/eslint.config').then(
         (m) => m.default,
       );
-      const { flatConfigsToRulesDTS } = await import("eslint-typegen/core");
-      const dts = await flatConfigsToRulesDTS(unjsPreset(), {
+      const { flatConfigsToRulesDTS } = await import('eslint-typegen/core');
+      const dts = await flatConfigsToRulesDTS(await unjsPreset(), {
         includeAugmentation: false,
       });
-      await fs.writeFile("src/types.gen.d.ts", dts);
+      await fs.writeFile('src/types.gen.d.ts', dts);
     },
   },
 });
