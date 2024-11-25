@@ -1,6 +1,6 @@
 {
   "name": "rx-eslint-config",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ESLint config for nuxt projects base on unjs",
   "repository": "rxMATTEO/eslint-config",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "lint:fix": "eslint --flag unstable_ts_config . --fix && prettier -w src",
     "prepack": "npm run build",
     "release": "npm run test && changelogen --release && npm publish && git push --follow-tags",
-    "test": "pnpm lint",
+    "test": "npm lint",
     "typegen": "node ./scripts/typegen.mjs"
   },
   "dependencies": {
@@ -49,5 +49,4 @@
     "eslint": "*",
     "typescript": "*"
   },
-  "packageManager": "pnpm@9.12.3"
 }
