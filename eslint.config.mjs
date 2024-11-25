@@ -1,3 +1,3 @@
-import riAdvancePreset from "./src/eslint.config.mjs";
+import eslintPreset from "./src/eslint.config.mjs";
 
-export default riAdvancePreset();
+export default eslintPreset();

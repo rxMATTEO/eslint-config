@@ -1,7 +1,7 @@
 import { createConfigForNuxt } from '@nuxt/eslint-config/flat';
 import pluginVueA11y from 'eslint-plugin-vuejs-accessibility';
 
-export default async function riAdvancePreset (){
+export default async function eslintPreset (){
   const config = await createConfigForNuxt({
   }, ...pluginVueA11y.configs['flat/recommended'], {
     rules: {
