@@ -1,7 +1,7 @@
 import { createConfigForNuxt } from '@nuxt/eslint-config/flat';
 import pluginVueA11y from 'eslint-plugin-vuejs-accessibility';
 
-export default async function eslintPreset (){
+export default async function eslintPreset (configs = []){
   const config = await createConfigForNuxt({
   }, ...pluginVueA11y.configs['flat/recommended'], {
     rules: {
@@ -163,7 +163,9 @@ export default async function eslintPreset (){
       'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
       'vue/component-api-style': ['error', ['script-setup']],
     },
-  }).toConfigs();
+  })
+      .append(...configs)
+      .toConfigs();
 
   return config;
 }
