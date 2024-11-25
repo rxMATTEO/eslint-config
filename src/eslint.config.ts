@@ -1,163 +1,102 @@
-import pluginVueA11y from "eslint-plugin-vuejs-accessibility";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+// @ts-ignore
+import eslintPluginUnicorn from "eslint-plugin-unicorn";
+// @ts-ignore
+import markdown from "eslint-plugin-markdown";
+import type { Linter } from "eslint";
+import type { RuleOptions } from "./types.gen";
+import globals from "globals";
 
-export default function riConfig() {
-  return [
-    ...pluginVueA11y.configs["flat/recommended"],
+export interface MainConfig {
+  rules?: RuleOptions;
+  markdown?: false | { rules: RuleOptions };
+  ignores?: string[];
+}
+
+export interface TypedFlatConfig extends Omit<Linter.FlatConfig, "rules"> {
+  rules?: RuleOptions;
+}
+
+export default function unjsPreset(
+  config: MainConfig = {},
+  ...userConfigs: TypedFlatConfig[]
+): Linter.Config[] {
+  const rules: RuleOptions = {
+    "unicorn/number-literal-case": 0,
+    "unicorn/template-indent": 0,
+    "unicorn/prevent-abbreviations": 0,
+    "unicorn/no-await-expression-member": 0,
+    "unicorn/no-useless-undefined": 0,
+    "unicorn/no-array-push-push": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/ban-ts-comment": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      { varsIgnorePattern: "^_", argsIgnorePattern: "^_" },
+    ],
+    "unicorn/prefer-string-replace-all": 0,
+    "unicorn/no-abusive-eslint-disable": 0,
+    "unicorn/import-style": 0,
+    "unicorn/prefer-module": 0,
+    "unicorn/consistent-function-scoping": 0,
+    ...config.rules,
+  };
+
+  const configs: Linter.FlatConfig[] = [
+    // https://eslint.org/docs/latest/rules/
+    eslint.configs.recommended,
+    // https://typescript-eslint.io/
+    ...(tseslint.configs.recommended as Linter.FlatConfig[]),
+    // https://github.com/sindresorhus/eslint-plugin-unicorn
+    eslintPluginUnicorn.configs["flat/recommended"] as Linter.FlatConfig,
+
+    // Preset overrides
+    { rules: rules as Linter.RulesRecord },
     {
-      rules: {
-        "import/no-unresolved": 0,
-        "import/extensions": 0,
-        indent: ["error", 2],
-        "linebreak-style": 0,
-        "vue/multi-word-component-names": 0,
-        quotes: ["error", "single"],
-        semi: ["error", "always"],
+      languageOptions: {
+        globals: Object.fromEntries(
+          Object.keys(globals).flatMap((group) =>
+            Object.keys(globals[group as keyof typeof globals]).map((k) => [
+              k,
+              true,
+            ]),
+          ),
+        ),
+      },
+    },
+    { ignores: ["dist", "coverage", ...(config.ignores || [])] },
+
+    // Markdown
+    // https://www.npmjs.com/package/eslint-plugin-markdown
+    config.markdown !== false && { plugins: { markdown } },
+    config.markdown !== false && {
+      files: ["*.md"],
+      processor: "markdown/markdown",
+    },
+    config.markdown !== false && {
+      files: ["**/*.md/*.js", "**/*.md/*.ts"],
+      rules: (<RuleOptions>{
+        "unicorn/filename-case": 0,
         "no-undef": 0,
-        "object-curly-spacing": ["error", "always"],
-        "vue/html-self-closing": ["error", {
-          html: {
-            void: "never",
-            normal: "always",
-            component: "always"
-          },
-          svg: "always",
-          math: "always"
-        }],
-        "vue/html-indent": [
-          "error",
-          2,
-          {
-            attribute: 1,
-            baseIndent: 1,
-            closeBracket: 0,
-            alignAttributesVertically: true
-          }
-        ],
-        "vue/max-attributes-per-line": ["error", {
-          singleline: {
-            max: 1
-          },
-          multiline: {
-            max: 1
-          }
-        }],
-        "vue/order-in-components": ["error", {
-          order: [
-            "el",
-            "name",
-            "key",
-            "parent",
-            "functional",
-            ["delimiters", "comments"],
-            ["components", "directives", "filters"],
-            "extends",
-            "mixins",
-            ["provide", "inject"],
-            "ROUTER_GUARDS",
-            "layout",
-            "middleware",
-            "validate",
-            "scrollToTop",
-            "transition",
-            "loading",
-            "inheritAttrs",
-            "model",
-            ["props", "propsData"],
-            "emits",
-            "setup",
-            "asyncData",
-            "data",
-            "fetch",
-            "head",
-            "computed",
-            "watch",
-            "watchQuery",
-            "LIFECYCLE_HOOKS",
-            "methods",
-            ["template", "render"],
-            "renderError"
-          ]
-        }],
-        "vue/no-irregular-whitespace": ["error", {
-          skipStrings: true,
-          skipComments: false,
-          skipRegExps: false,
-          skipTemplates: false,
-          skipHTMLAttributeValues: false,
-          skipHTMLTextContents: false
-        }],
-        "vue/component-definition-name-casing": ["error", "PascalCase"],
-        "vue/match-component-file-name": ["error", {
-          extensions: ["vue"],
-          shouldMatchCase: false
-        }],
-        "vue/no-dupe-keys": ["error", {
-          groups: []
-        }],
-        "vue/component-name-in-template-casing": ["error", "PascalCase", {
-          registeredComponentsOnly: false
-        }],
-        "comma-dangle": ["error", "always-multiline"],
-        // 'no-console': 'error',
-        "no-debugger": "error",
-        // 'arrow-parens': ['error', 'as-needed'],
-        "no-plusplus": "off",
-        "constructor-super": "off",
-        "vue/no-v-model-argument": "off",
-        "no-mixed-operators": [
-          "error",
-          {
-            groups: [
-              ["+", "-", "*", "/", "%", "**"],
-              ["&", "|", "^", "~", "<<", ">>", ">>>"],
-              ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
-              ["&&", "||"],
-              ["in", "instanceof"]
-            ],
-            allowSamePrecedence: true
-          }
-        ],
-        "import/prefer-default-export": "off",
-        "no-return-await": "off", //deprecated
-        "no-unused-expressions": "warn",
-        "no-param-reassign": "off",
-        "no-multi-assign": "off",
-        "prefer-destructuring": ["error", {
-          array: true,
-          object: true
-        }, {
-          enforceForRenamedProperties: false
-        }
-        ],
-        "camelcase": ["error", {
-          "ignoreDestructuring": true,
-          "properties": "never",
-          "allow": ["client", "mark", "except", "category_enum", "external", "owners_id", "utm_"] //gql
-        }],
-        "vue/no-multiple-template-root": "off",
-        "vue/html-button-has-type": "error",
-        // off cuz deprecated onna current version of vue
-        "vue/no-v-for-template-key": "off",
-        "vue/no-v-html": "off",
-        "no-bitwise": ["error", { allow: ["~"] }],
-        // 'no-unused-locals': ['error', {argsIgnorePattern: '^_'}],
-        "no-unused-vars": "off",
-        "max-len": ["error", { code: 120, ignorePattern: "href=|src=" }],
-        "vue/max-len": ["error", { code: 120, ignoreHTMLAttributeValues: true }],
-        "object-curly-newline": ["error", {
-          ObjectExpression: { multiline: true, consistent: true },
-          ObjectPattern: { multiline: true, consistent: true }
-        }],
-        "vuejs-accessibility/form-control-has-label": "off",
-        "vue/enforce-style-attribute": [
-          "error",
-          { "allow": ["module"] }
-        ],
-        "@typescript-eslint/no-empty-object-type": ["error", {
-          allowInterfaces: "with-single-extends"
-        }],
-        "lines-between-class-members": ["error", "always", { exceptAfterSingleLine: true }]
-      }
-    }
-  ];
-};
+        "no-unused-expressions": 0,
+        "padded-blocks": 0,
+        "@typescript-eslint/no-unused-vars": 0,
+        "no-empty-pattern": 0,
+        "no-redeclare": 0,
+        "no-import-assign": 0,
+        "@typescript-eslint/no-require-imports": 0,
+        "@typescript-eslint/no-unused-expressions": 0,
+        ...config.markdown?.rules,
+      }) as any,
+    },
+
+    // User overrides
+    ...(userConfigs as Linter.FlatConfig[]),
+  ].filter(Boolean) as Linter.FlatConfig[];
+
+  return configs;
+}

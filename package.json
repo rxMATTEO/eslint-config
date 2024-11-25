@@ -1,7 +1,8 @@
 {
-  "name": "ri-eslint-config",
-  "version": "0.2",
+  "name": "eslint-config-unjs",
+  "version": "0.4.1",
   "description": "ESLint config for unjs projects",
+  "repository": "unjs/eslint-config",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -16,30 +17,37 @@
   "scripts": {
     "build": "unbuild",
     "dev": "eslint-config-inspector",
-    "lint": "eslint . && prettier -c src",
-    "lint:fix": "eslint . --fix && prettier -w src",
-    "prepack": "npm run build",
+    "lint": "eslint --flag unstable_ts_config . && prettier -c src",
+    "lint:fix": "eslint --flag unstable_ts_config . --fix && prettier -w src",
+    "prepack": "pnpm build",
     "release": "pnpm test && changelogen --release && npm publish && git push --follow-tags",
     "test": "pnpm lint",
     "typegen": "node ./scripts/typegen.mjs"
   },
   "dependencies": {
-    "globals": "^15.9.0"
+    "@eslint/js": "^9.14.0",
+    "eslint-plugin-markdown": "^5.1.0",
+    "eslint-plugin-unicorn": "^55.0.0",
+    "globals": "^15.12.0",
+    "typescript-eslint": "^8.13.0"
   },
   "devDependencies": {
-    "@eslint/config-inspector": "^0.5.4",
-    "@types/eslint": "^8.56.12",
+    "@eslint/config-inspector": "^0.5.6",
+    "@types/eslint": "^9.6.1",
     "@types/eslint__js": "^8.42.3",
-    "@types/node": "^20.16.2",
-    "eslint-typegen": "^0.3.1",
-    "eslint": "^9.5.0",
-    "eslint-plugin-vuejs-accessibility": "^2.4.1",
-    "jiti": "^1.21.6",
-    "typescript": "^5.2.2",
+    "@types/node": "^22.9.0",
+    "automd": "^0.3.12",
+    "changelogen": "^0.5.7",
+    "eslint": "^9.14.0",
+    "eslint-typegen": "^0.3.2",
+    "jiti": "^2.4.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
     "unbuild": "^2.0.0"
   },
   "peerDependencies": {
     "eslint": "*",
     "typescript": "*"
-  }
+  },
+  "packageManager": "pnpm@9.12.3"
 }
