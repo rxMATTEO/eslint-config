@@ -1,3 +1,3 @@
-import eslintPreset from "./src/eslint.config.mjs";
+import eslintPreset from './src/eslint.config.mjs';
 
 export default eslintPreset();
