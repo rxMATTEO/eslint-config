@@ -14,28 +14,82 @@ export default async function eslintPreset (configs = [], opts = {}){
       '@stylistic/js': stylisticJs,
     },
     rules: {
-      'import/no-unresolved': 0,
-      'import/extensions': 0,
+      '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/indent': ['error', 2],
       '@stylistic/linebreak-style': ['error', 'unix'],
-      'vue/multi-word-component-names': 0,
-      quotes: ['error', 'single'],
-      semi: ['error', 'always'],
-      'vuejs-accessibility/media-has-caption': 0,
-      'no-undef': 0,
-      // !! fix this shit !!
-      'vuejs-accessibility/tabindex-no-positive': 0,
-      // !!
-      'object-curly-spacing': ['error', 'always'],
-      'vue/html-self-closing': ['error', {
-        html: {
-          void: 'never',
-          normal: 'always',
-          component: 'always',
+      '@stylistic/max-len': ['error', {code: 120, ignorePattern: 'href=|src='}],
+      '@stylistic/no-mixed-operators': [
+        'error',
+        {
+          groups: [
+            ['+', '-', '*', '/', '%', '**'],
+            ['&', '|', '^', '~', '<<', '>>', '>>>'],
+            ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
+            ['&&', '||'],
+            ['in', 'instanceof'],
+          ],
+          allowSamePrecedence: true,
         },
-        svg: 'always',
-        math: 'always',
+      ],
+      '@stylistic/object-curly-newline': ['error', {
+        ObjectExpression: {
+          multiline: true, consistent: true, minProperties: 3,
+        },
+        ObjectPattern: {
+          multiline: true, consistent: true, minProperties: 3,
+        },
       }],
+      '@stylistic/object-curly-spacing': ['error', 'always'],
+      '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/semi': ['error', 'always'],
+      '@typescript-eslint/no-empty-object-type': ['error', {
+        allowInterfaces: 'with-single-extends',
+      }],
+      'camelcase': ['error', {
+        'ignoreDestructuring': true,
+        'properties': 'never',
+        'allow': ['client', 'mark', 'except', 'category_enum', 'external', 'owners_id', 'utm_'], //gql
+      }],
+      'constructor-super': 'off',
+      'import/extensions': ['error', {
+        'js': 'never',
+        'ts': 'never',
+        'vue': 'always',
+        'config': 'always',
+      }],
+      'import/no-unresolved': 0,
+      // !! fix this shit !!
+      'import/prefer-default-export': 'off',
+      // !!
+      'lines-between-class-members': ['error', 'always', {exceptAfterSingleLine: true}],
+      'no-bitwise': ['error', {allow: ['~']}],
+      'no-debugger': 'error',
+      'no-multi-assign': 'off',
+      'no-param-reassign': 'off',
+      'no-plusplus': 'off',
+      'no-return-await': 'off',
+      'no-undef': 0,
+      'no-unused-expressions': 'warn',
+      // 'no-console': 'error',
+      'no-unused-vars': 'off',
+      // 'arrow-parens': ['error', 'as-needed'],
+      'prefer-destructuring': ['error', {
+        array: true,
+        object: true,
+      }, {
+        enforceForRenamedProperties: false,
+      },
+      ],
+      'vue/component-api-style': ['error', ['script-setup']],
+      'vue/component-definition-name-casing': ['error', 'PascalCase'],
+      'vue/component-name-in-template-casing': ['error', 'PascalCase', {
+        registeredComponentsOnly: false,
+      }],
+      'vue/enforce-style-attribute': [
+        'error',
+        {'allow': ['module']},
+      ], //deprecated
+      'vue/html-button-has-type': 'error',
       'vue/html-indent': [
         'error',
         2,
@@ -46,6 +100,19 @@ export default async function eslintPreset (configs = [], opts = {}){
           alignAttributesVertically: true,
         },
       ],
+      'vue/html-self-closing': ['error', {
+        html: {
+          void: 'never',
+          normal: 'always',
+          component: 'always',
+        },
+        svg: 'always',
+        math: 'always',
+      }],
+      'vue/match-component-file-name': ['error', {
+        extensions: ['vue'],
+        shouldMatchCase: false,
+      }],
       'vue/max-attributes-per-line': ['error', {
         singleline: {
           max: 1,
@@ -54,6 +121,25 @@ export default async function eslintPreset (configs = [], opts = {}){
           max: 1,
         },
       }],
+      'vue/max-len': ['error', {code: 120, ignoreHTMLAttributeValues: true}],
+      'vue/multi-word-component-names': 0,
+      // off cuz deprecated onna current version of vue
+      'vue/no-dupe-keys': ['error', {
+        groups: [],
+      }],
+      'vue/no-irregular-whitespace': ['error', {
+        skipStrings: true,
+        skipComments: false,
+        skipRegExps: false,
+        skipTemplates: false,
+        skipHTMLAttributeValues: false,
+        skipHTMLTextContents: false,
+      }],
+      'vue/no-multiple-template-root': 'off',
+      // 'no-unused-locals': ['error', {argsIgnorePattern: '^_'}],
+      'vue/no-v-for-template-key': 'off',
+      'vue/no-v-html': 'off',
+      'vue/no-v-model-argument': 'off',
       'vue/order-in-components': ['error', {
         order: [
           'el',
@@ -91,86 +177,9 @@ export default async function eslintPreset (configs = [], opts = {}){
           'renderError',
         ],
       }],
-      'vue/no-irregular-whitespace': ['error', {
-        skipStrings: true,
-        skipComments: false,
-        skipRegExps: false,
-        skipTemplates: false,
-        skipHTMLAttributeValues: false,
-        skipHTMLTextContents: false,
-      }],
-      'vue/component-definition-name-casing': ['error', 'PascalCase'],
-      'vue/match-component-file-name': ['error', {
-        extensions: ['vue'],
-        shouldMatchCase: false,
-      }],
-      'vue/no-dupe-keys': ['error', {
-        groups: [],
-      }],
-      'vue/component-name-in-template-casing': ['error', 'PascalCase', {
-        registeredComponentsOnly: false,
-      }],
-      'comma-dangle': ['error', 'always-multiline'],
-      // 'no-console': 'error',
-      'no-debugger': 'error',
-      // 'arrow-parens': ['error', 'as-needed'],
-      'no-plusplus': 'off',
-      'constructor-super': 'off',
-      'vue/no-v-model-argument': 'off',
-      'no-mixed-operators': [
-        'error',
-        {
-          groups: [
-            ['+', '-', '*', '/', '%', '**'],
-            ['&', '|', '^', '~', '<<', '>>', '>>>'],
-            ['==', '!=', '===', '!==', '>', '>=', '<', '<='],
-            ['&&', '||'],
-            ['in', 'instanceof'],
-          ],
-          allowSamePrecedence: true,
-        },
-      ],
-      'import/prefer-default-export': 'off',
-      'no-return-await': 'off', //deprecated
-      'no-unused-expressions': 'warn',
-      'no-param-reassign': 'off',
-      'no-multi-assign': 'off',
-      'prefer-destructuring': ['error', {
-        array: true,
-        object: true,
-      }, {
-        enforceForRenamedProperties: false,
-      },
-      ],
-      'camelcase': ['error', {
-        'ignoreDestructuring': true,
-        'properties': 'never',
-        'allow': ['client', 'mark', 'except', 'category_enum', 'external', 'owners_id', 'utm_'], //gql
-      }],
-      'vue/no-multiple-template-root': 'off',
-      'vue/html-button-has-type': 'error',
-      // off cuz deprecated onna current version of vue
-      'vue/no-v-for-template-key': 'off',
-      'vue/no-v-html': 'off',
-      'no-bitwise': ['error', { allow: ['~'] }],
-      // 'no-unused-locals': ['error', {argsIgnorePattern: '^_'}],
-      'no-unused-vars': 'off',
-      'max-len': ['error', { code: 120, ignorePattern: 'href=|src=' }],
-      'vue/max-len': ['error', { code: 120, ignoreHTMLAttributeValues: true }],
-      'object-curly-newline': ['error', {
-        ObjectExpression: { multiline: true, consistent: true },
-        ObjectPattern: { multiline: true, consistent: true },
-      }],
       'vuejs-accessibility/form-control-has-label': 'off',
-      'vue/enforce-style-attribute': [
-        'error',
-        { 'allow': ['module'] },
-      ],
-      '@typescript-eslint/no-empty-object-type': ['error', {
-        allowInterfaces: 'with-single-extends',
-      }],
-      'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }],
-      'vue/component-api-style': ['error', ['script-setup']],
+      'vuejs-accessibility/media-has-caption': 0,
+      'vuejs-accessibility/tabindex-no-positive': 0,
     },
   })
     .append(...configs)
