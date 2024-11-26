@@ -17,7 +17,7 @@ export default async function eslintPreset (configs = [], opts = {}){
       'import/no-unresolved': 0,
       'import/extensions': 0,
       '@stylistic/indent': ['error', 2],
-      'linebreak-style': 0,
+      '@stylistic/linebreak-style': ['error', 'unix'],
       'vue/multi-word-component-names': 0,
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
