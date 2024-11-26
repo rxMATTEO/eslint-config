@@ -17,7 +17,6 @@ export default async function eslintPreset (configs = [], opts = {}){
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/indent': ['error', 2],
       '@stylistic/linebreak-style': ['error', 'unix'],
-      '@stylistic/max-len': ['error', {code: 120, ignorePattern: 'href=|src='}],
       '@stylistic/no-mixed-operators': [
         'error',
         {
@@ -121,7 +120,7 @@ export default async function eslintPreset (configs = [], opts = {}){
           max: 1,
         },
       }],
-      'vue/max-len': ['error', {code: 120, ignoreHTMLAttributeValues: true}],
+      'vue/max-len': ['error', {code: 120, ignoreHTMLAttributeValues: true, ignorePattern: 'href=|src='}],
       'vue/multi-word-component-names': 0,
       // off cuz deprecated onna current version of vue
       'vue/no-dupe-keys': ['error', {
