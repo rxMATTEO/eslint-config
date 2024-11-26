@@ -30,13 +30,13 @@
     "@nuxt/eslint-config": "^0.5.1",
     "eslint-plugin-vuejs-accessibility": "^2.4.1",
     "globals": "^15.12.0",
-    "typescript-eslint": "^8.13.0"
+    "typescript-eslint": "^8.13.0",
+    "@stylistic/eslint-plugin": "^2.11.0",
+    "@stylistic/eslint-plugin-js": "^2.11.0",
+    "@stylistic/eslint-plugin-ts": "^2.11.0"
   },
   "devDependencies": {
     "@eslint/config-inspector": "^0.5.6",
-    "@stylistic/eslint-plugin": "^2.11.0",
-    "@stylistic/eslint-plugin-js": "^2.11.0",
-    "@stylistic/eslint-plugin-ts": "^2.11.0",
     "@types/eslint": "^9.6.1",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^22.9.0",
