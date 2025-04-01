@@ -49,7 +49,7 @@ export default async function eslintPreset (configs = [], opts = {}){
         'properties': 'never',
         'allow': [
           'client', 'mark', 'except',
-          'category_enum', 'external', 'owners_id', 'utm_', ""
+          'category_enum', 'external', 'owners_id', 'utm_',
           "external_id_array",
           "except_external_id",
           "mark_id",
